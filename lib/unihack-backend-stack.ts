@@ -5,6 +5,9 @@ import {
     aws_lambda as lambda,
     aws_appintegrations,
     aws_iam as iam,
+    aws_s3,
+    aws_s3_deployment,
+    aws_cloudfront,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as apig from "@aws-cdk/aws-apigatewayv2-alpha";
@@ -80,6 +83,21 @@ export class UnihackBackendStack extends Stack {
         );
         queueTable.grantReadData(getStatusFunction);
 
+        const listPatientsFunction = new lambda.Function(
+            this,
+            "listPatientsFunction",
+            {
+                runtime: lambda.Runtime.PYTHON_3_9,
+                handler: "app.handler",
+                code: lambda.Code.fromAsset("lib/src/listpatients"),
+                architecture: lambda.Architecture.ARM_64,
+                environment: {
+                    TABLE_NAME: queueTable.tableName,
+                },
+            }
+        );
+        queueTable.grantReadData(listPatientsFunction);
+
         const unihackAPI = new apig.HttpApi(this, "UnihackHTTPAPI");
 
         unihackAPI.addRoutes({
@@ -97,7 +115,7 @@ export class UnihackBackendStack extends Stack {
                 processTaskFunction
             ),
             path: "/processtask",
-            methods: [apig.HttpMethod.POST],
+            methods: [apig.HttpMethod.GET],
         });
 
         unihackAPI.addRoutes({
@@ -109,9 +127,22 @@ export class UnihackBackendStack extends Stack {
             methods: [apig.HttpMethod.GET],
         });
 
-        // example resource
-        // const queue = new sqs.Queue(this, 'UnihackBackendQueue', {
-        //   visibilityTimeout: cdk.Duration.seconds(300)
-        // });
+        unihackAPI.addRoutes({
+            integration: new apig_integrations.HttpLambdaIntegration(
+                "listpatientsintegration",
+                listPatientsFunction
+            ),
+            path: "/listpatients",
+            methods: [apig.HttpMethod.GET],
+        });
+
+        const websiteBucket = new aws_s3.Bucket(this, "QubeWebsite", {
+            websiteIndexDocument: "index.html",
+        });
+
+        new aws_s3_deployment.BucketDeployment(this, "QubeWebsiteDeployment", {
+            sources: [aws_s3_deployment.Source.asset("lib/src/website")],
+            destinationBucket: websiteBucket,
+        });
     }
 }

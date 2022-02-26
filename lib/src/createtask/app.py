@@ -24,4 +24,4 @@ def handler(event, _):
             "patientName": body["patientName"],
         }
     )
-    return json.dumps({"statusCode": 200, "body": {"entryId": entry_id}})
+    return {"entryId": entry_id}

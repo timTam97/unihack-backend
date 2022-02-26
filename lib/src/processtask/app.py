@@ -16,7 +16,7 @@ def handler(event, _):
     res = queue_table.scan()
     print(res)
     if not res["Items"]:
-        return json.dumps({"statusCode": 404})
+        return 404
     front_queue_member = sorted(res["Items"], key=lambda x: int(x["timeCreated"]))[0]
     queue_table.delete_item(Key={"entryId": front_queue_member["entryId"]})
     sns.publish(
@@ -28,4 +28,4 @@ def handler(event, _):
             "AWS.SNS.SMS.SenderID": {"DataType": "String", "StringValue": "QubeBooking"}
         },
     )
-    return json.dumps({"statusCode": 200})
+    return 200

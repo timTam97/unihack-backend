@@ -27,18 +27,13 @@ def handler(event, _):
             queue_pos = i
 
     if queue_pos == -1:
-        return json.dumps({"statusCode": 404})
+        return 404
 
     estimated_appointment_time = (queue_pos - 1) * int(
         (os.environ.get("APPOINTMENT_TIME") * 60)
     ) + int(time.time())
 
-    return json.dumps(
-        {
-            "statusCode": 200,
-            "body": {
-                "queuePosition": queue_pos,
-                "estimatedAppointmentTime": estimated_appointment_time,
-            },
-        }
-    )
+    return {
+        "queuePosition": queue_pos,
+        "estimatedAppointmentTime": estimated_appointment_time,
+    }
