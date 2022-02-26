@@ -4,6 +4,7 @@ import {
     aws_dynamodb as dynamodb,
     aws_lambda as lambda,
     aws_appintegrations,
+    aws_iam as iam,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as apig from "@aws-cdk/aws-apigatewayv2-alpha";
@@ -20,10 +21,6 @@ export class UnihackBackendStack extends Stack {
             partitionKey: {
                 name: "entryId",
                 type: dynamodb.AttributeType.STRING,
-            },
-            sortKey: {
-                name: "timeCreated",
-                type: dynamodb.AttributeType.NUMBER,
             },
             billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
         });
@@ -59,6 +56,13 @@ export class UnihackBackendStack extends Stack {
             }
         );
         queueTable.grantReadWriteData(processTaskFunction);
+        processTaskFunction.addToRolePolicy(
+            new iam.PolicyStatement({
+                actions: ["sns:Publish"],
+                effect: iam.Effect.ALLOW,
+                resources: ["*"],
+            })
+        );
 
         const getStatusFunction = new lambda.Function(
             this,
