@@ -14,10 +14,16 @@ export class UnihackBackendStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
+        const DEFAULT_APPOINTMENT_TIME_MINS = "10";
+
         const queueTable = new dynamodb.Table(this, "UnihackQueueTable", {
             partitionKey: {
                 name: "entryId",
                 type: dynamodb.AttributeType.STRING,
+            },
+            sortKey: {
+                name: "timeCreated",
+                type: dynamodb.AttributeType.NUMBER,
             },
             billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
         });
@@ -32,6 +38,7 @@ export class UnihackBackendStack extends Stack {
                 architecture: lambda.Architecture.ARM_64,
                 environment: {
                     TABLE_NAME: queueTable.tableName,
+                    APPOINTMENT_TIME: DEFAULT_APPOINTMENT_TIME_MINS,
                 },
             }
         );
@@ -47,6 +54,7 @@ export class UnihackBackendStack extends Stack {
                 architecture: lambda.Architecture.ARM_64,
                 environment: {
                     TABLE_NAME: queueTable.tableName,
+                    APPOINTMENT_TIME: DEFAULT_APPOINTMENT_TIME_MINS,
                 },
             }
         );
@@ -62,6 +70,7 @@ export class UnihackBackendStack extends Stack {
                 architecture: lambda.Architecture.ARM_64,
                 environment: {
                     TABLE_NAME: queueTable.tableName,
+                    APPOINTMENT_TIME: DEFAULT_APPOINTMENT_TIME_MINS,
                 },
             }
         );
@@ -95,18 +104,6 @@ export class UnihackBackendStack extends Stack {
             path: "/getstatus",
             methods: [apig.HttpMethod.GET],
         });
-
-        // queueTable.addGlobalSWecondaryIndex({
-        //     indexName: "UnihackGSI",
-        //     partitionKey: {
-        //         name: "entryStatus",
-        //         type: aws_dynamodb.AttributeType.STRING,
-        //     },
-        //     sortKey: {
-        //         name: "timeCreated",
-        //         type: aws_dynamodb.AttributeType.STRING,
-        //     },
-        // });
 
         // example resource
         // const queue = new sqs.Queue(this, 'UnihackBackendQueue', {
