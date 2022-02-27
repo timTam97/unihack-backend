@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QUBE</title>
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="bootstrap.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+        <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+        <link rel="stylesheet" href="main.css">
+        <!--<link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">-->
+    </head>
+    
+    <body>
+        <div id="app">
+            <div id="sidebar" class="active">
+                <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <a href="index.html"><img src="assets/images/logo/logo2.png" alt="QUBE" srcset=""></a>
+                </div>
+                <div class="toggler">
+                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+
+                
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+            </div>
+            <div id="main">
+                <header class="mb-3">
+                    <a href="#" class="burger-btn d-block d-xl-none">
+                        <i class="bi bi-justify fs-3"></i>
+                    </a>
+                </header>
+                
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>QUBE</h3>
+                    <p class="text-subtitle text-muted">Queue Management System </p>
+                </div>
+
+            </div>
+        </div>
+        
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Current Queue</h4>
+                    <title>Fetch Local JSON</title>
+                    <table class="table table-striped" id="myTable">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Time Created</th>
+                            <th>Queue Position</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                    
+                        <tbody id="myTable">
+                            
+                        </tbody>
+                    </table>
+                    <script>
+                        var myArray = [
+                            {"phoneNumber": "+6178613323", "timeCreated": 1645869989, "patientName": "Tim", "entryId": "ARVZhMOSahErPFg4MF0TJQ"}, 
+                            {"phoneNumber": "+61401584901", "timeCreated": 1645869751, "patientName": "Chi", "entryId": "yzdRyBKxU_v6tgW-siZ-9g"}
+                            ]
+                        
+                        
+                        buildTable(myArray)
+                    
+                    
+                        function buildTable(data){
+                            var table = document.getElementById('myTable')
+                    
+                            for (var i = 0; i < data.length; i++){
+                               
+                                var date = new Date(data[i].timeCreated*1000)
+                                var hours = date.getHours();
+                                var minutes = date.getMinutes();
+                                var formattedTime = hours + " : "+ minutes;
+                                console.log(formattedTime);
+
+                                var row = `<tr>
+                                                <td>${data[i].patientName}</td>
+                                                <td>${data[i].phoneNumber}</td>
+                                                <td>${data[i].timeCreated}</td>
+                                                <td>${i+1}</td>
+                                                <td>
+                                                    <button type="button" class="btn-sm btn-danger">Remove</button>
+                                                </td>
+                                          </tr>`
+                                table.innerHTML += row
+                    
+                    
+                            }
+                        }
+                        function myFunction(){
+                            console.log('myFunction Called')
+                        }
+
+                        myFunction();
+
+                        setInterval(function(){
+                            myFunction()
+                        }, 10000)
+                    
+                    </script>
+
+  
+                </div>
+            </div>
+
+
+        </section>
+
+        
+    </div>
+    
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2022 &copy; HeyAlice</p>
+                        </div>
+                        <div class="float-end">
+                            <p>--</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    
+        <script src="app.js"></script>
+
+    </body>
+    
+    
+    </html>
