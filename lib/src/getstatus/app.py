@@ -16,20 +16,20 @@ queue_table = boto3.resource("dynamodb").Table(os.environ.get("TABLE_NAME"))
 
 def handler(event, _):
     print(event)
-    body = json.loads((event["body"]))
+    body = event["headers"]
     res = queue_table.scan()
     sorted_items = sorted(res["Items"], key=lambda x: int(x["timeCreated"]))
     # print(res)
     print(sorted_items)
     queue_pos = -1
     for i in range(len(sorted_items)):
-        if sorted_items[i]["entryId"] == body["entryId"]:
+        if sorted_items[i]["entryId"] == body["entryid"]:
             queue_pos = i
 
     if queue_pos == -1:
         return 404
 
-    estimated_appointment_time = (queue_pos - 1) * int(
+    estimated_appointment_time = queue_pos * int(
         (os.environ.get("APPOINTMENT_TIME") * 60)
     ) + int(time.time())
 
