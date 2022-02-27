@@ -141,7 +141,7 @@ export class UnihackBackendStack extends Stack {
         });
 
         new aws_s3_deployment.BucketDeployment(this, "QubeWebsiteDeployment", {
-            sources: [aws_s3_deployment.Source.asset("lib/src/website")],
+            sources: [aws_s3_deployment.Source.asset("lib/src/dumbwebsite")],
             destinationBucket: websiteBucket,
         });
     }
