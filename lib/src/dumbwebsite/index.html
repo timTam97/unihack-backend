@@ -9,11 +9,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap.css">
-        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
         <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
         <link rel="stylesheet" href="main.css">
-        <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+        <!--<link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">-->
     </head>
     
     <body>
@@ -31,71 +31,7 @@
             </div>
         </div>
         <div class="sidebar-menu">
-             <!--
-            <ul class="menu">
-                <li class="sidebar-title">Menu</li>
-               
-                <li
-                    class="sidebar-item  ">
-                    <a href="index.html" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                
-                <li
-                    class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Components</span>
-                    </a>
-                    <ul class="submenu ">
-                        <li class="submenu-item ">
-                            <a href="component-alert.html">Alert</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-badge.html">Badge</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-breadcrumb.html">Breadcrumb</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-button.html">Button</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-card.html">Card</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-carousel.html">Carousel</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-dropdown.html">Dropdown</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-list-group.html">List Group</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-modal.html">Modal</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-navs.html">Navs</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-pagination.html">Pagination</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-progress.html">Progress</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-spinner.html">Spinner</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-tooltip.html">Tooltip</a>
-                        </li>
-                    </ul>
-                </li>
-                
-                -->
+
                 
             </ul>
         </div>
@@ -116,16 +52,7 @@
                     <h3>QUBE</h3>
                     <p class="text-subtitle text-muted">Queue Management System </p>
                 </div>
-                <!--
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Layout Default</li>
-                        </ol>
-                    </nav>
-                </div>
-                -->
+
             </div>
         </div>
         
@@ -133,36 +60,77 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Current Queue</h4>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped" id="table1">
+                    <title>Fetch Local JSON</title>
+                    <table class="table table-striped" id="myTable">
                         <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Type</th>
-                                <th>Expected Time</th>
-                                <th>Status</th>
-                            </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Time Created</th>
+                            <th>Queue Position</th>
+                            <th>Status</th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Thim</td>
-                                <td>0478613323</td>
-                                <td>Short Appointment</td>
-                                <td>10:30AM</td>
-                                <td>
-                                    <!--<span class="badge bg-warning">Remove</span>-->
-                                    <button type="button" class="btn-sm btn-danger">Remove</button>
-
-                                </td>
-                            </tr>
+                    
+                        <tbody id="myTable">
+                            
                         </tbody>
                     </table>
+                    <script>
+                        var myArray = [
+                            {"phoneNumber": "+6178613323", "timeCreated": 1645869989, "patientName": "Tim", "entryId": "ARVZhMOSahErPFg4MF0TJQ"}, 
+                            {"phoneNumber": "+61401584901", "timeCreated": 1645869751, "patientName": "Chi", "entryId": "yzdRyBKxU_v6tgW-siZ-9g"}
+                            ]
+                        
+                        
+                        buildTable(myArray)
+                    
+                    
+                        function buildTable(data){
+                            var table = document.getElementById('myTable')
+                    
+                            for (var i = 0; i < data.length; i++){
+                               
+                                var date = new Date(data[i].timeCreated*1000)
+                                var hours = date.getHours();
+                                var minutes = date.getMinutes();
+                                var formattedTime = hours + " : "+ minutes;
+                                console.log(formattedTime);
+
+                                var row = `<tr>
+                                                <td>${data[i].patientName}</td>
+                                                <td>${data[i].phoneNumber}</td>
+                                                <td>${data[i].timeCreated}</td>
+                                                <td>${i+1}</td>
+                                                <td>
+                                                    <button type="button" class="btn-sm btn-danger">Remove</button>
+                                                </td>
+                                          </tr>`
+                                table.innerHTML += row
+                    
+                    
+                            }
+                        }
+                        function myFunction(){
+                            console.log('myFunction Called')
+                        }
+
+                        myFunction();
+
+                        setInterval(function(){
+                            myFunction()
+                        }, 10000)
+                    
+                    </script>
+
+  
                 </div>
             </div>
-    
+
+
         </section>
+
+        
     </div>
     
                 <footer>
@@ -178,11 +146,10 @@
             </div>
         </div>
         <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        
-        <script src="assets/js/mazer.js"></script>
+    
         <script src="app.js"></script>
 
     </body>
+    
     
     </html>
