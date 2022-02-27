@@ -66,17 +66,16 @@
                     <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
                     <form action="https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/processtask" method="get" target="dummyframe">
-                        <input type="submit" name="upvote" value="Next Patient" class="btn-sm btn-success" onClick="window.location.reload();"/>
+                        <input type="submit" name="upvote" value="Next Patient" class="btn-sm btn-success" onclick= "refreshTable()"/>
                     </form>
-                    <!--
+
                     <script>
-                        var test;
-                        let url = 'https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/listpatients';
-                        fetch(url)
-                        .then(res => res.json())
-                        .then(out =>console.log('Checkout this JSON! ', out))
+                    function refreshTable(){
+                        setTimeout(location.reload.bind(location), 750);
+                    }
+
                     </script>
-                    -->
+
 
                     <table class="table table-striped" id="myTable">
                         <thead>
@@ -93,11 +92,6 @@
                         </tbody>
                     </table>
                     <script>
-                        
-                        var myArray = [
-                            {"phoneNumber": "+6178613323", "timeCreated": 1645869989, "patientName": "Tim", "entryId": "ARVZhMOSahErPFg4MF0TJQ"}, 
-                            {"phoneNumber": "+61401584901", "timeCreated": 1645869751, "patientName": "Chi", "entryId": "yzdRyBKxU_v6tgW-siZ-9g"}
-                            ]
 
                         let url = 'https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/listpatients';
                         fetch(url)
