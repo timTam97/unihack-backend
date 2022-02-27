@@ -29,8 +29,8 @@ def handler(event, _):
     if queue_pos == -1:
         return 404
 
-    estimated_appointment_time = queue_pos * int(
-        (os.environ.get("APPOINTMENT_TIME") * 60)
+    estimated_appointment_time = queue_pos * (
+        int(os.environ.get("APPOINTMENT_TIME")) * 60
     ) + int(time.time())
 
     return {
