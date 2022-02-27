@@ -4,12 +4,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="refresh" content="60">
+
         <title>QUBE</title>
         
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
         <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
         <link rel="stylesheet" href="main.css">
@@ -60,7 +63,21 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Current Queue</h4>
-                    <title>Fetch Local JSON</title>
+                    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+                    <form action="https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/processtask" method="get" target="dummyframe">
+                        <input type="submit" name="upvote" value="Next Patient" class="btn-sm btn-success" onClick="window.location.reload();"/>
+                    </form>
+                    <!--
+                    <script>
+                        var test;
+                        let url = 'https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/listpatients';
+                        fetch(url)
+                        .then(res => res.json())
+                        .then(out =>console.log('Checkout this JSON! ', out))
+                    </script>
+                    -->
+
                     <table class="table table-striped" id="myTable">
                         <thead>
                         <tr>
@@ -68,7 +85,6 @@
                             <th>Phone Number</th>
                             <th>Time Created</th>
                             <th>Queue Position</th>
-                            <th>Status</th>
                         </tr>
                         </thead>
                     
@@ -77,15 +93,18 @@
                         </tbody>
                     </table>
                     <script>
+                        
                         var myArray = [
                             {"phoneNumber": "+6178613323", "timeCreated": 1645869989, "patientName": "Tim", "entryId": "ARVZhMOSahErPFg4MF0TJQ"}, 
                             {"phoneNumber": "+61401584901", "timeCreated": 1645869751, "patientName": "Chi", "entryId": "yzdRyBKxU_v6tgW-siZ-9g"}
                             ]
-                        
-                        
-                        buildTable(myArray)
+
+                        let url = 'https://iasrapy4gj.execute-api.ap-southeast-2.amazonaws.com/listpatients';
+                        fetch(url)
+                        .then(res => res.json())
+                        .then(out =>buildTable(out))
                     
-                    
+
                         function buildTable(data){
                             var table = document.getElementById('myTable')
                     
@@ -94,32 +113,22 @@
                                 var date = new Date(data[i].timeCreated*1000)
                                 var hours = date.getHours();
                                 var minutes = date.getMinutes();
-                                var formattedTime = hours + " : "+ minutes;
+                                var formattedTime = hours + ":"+ minutes;
                                 console.log(formattedTime);
 
                                 var row = `<tr>
                                                 <td>${data[i].patientName}</td>
                                                 <td>${data[i].phoneNumber}</td>
-                                                <td>${data[i].timeCreated}</td>
+                                                <td>${formattedTime}</td>
                                                 <td>${i+1}</td>
-                                                <td>
-                                                    <button type="button" class="btn-sm btn-danger">Remove</button>
-                                                </td>
                                           </tr>`
                                 table.innerHTML += row
                     
                     
                             }
                         }
-                        function myFunction(){
-                            console.log('myFunction Called')
-                        }
 
-                        myFunction();
 
-                        setInterval(function(){
-                            myFunction()
-                        }, 10000)
                     
                     </script>
 
